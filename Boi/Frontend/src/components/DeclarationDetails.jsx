@@ -11,20 +11,12 @@ const DeclarationDetails = ({ data }) => {
                 I declare that the information furnished above in this application, attachments, and otherwise represented are true and correct, and I undertake to inform the BOI immediately if there is any change in the information provided.
             </p>
 
-            {/* Signature and Date Section */}
-            <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:space-x-12 space-y-6 sm:space-y-0">
-                <div>
-                    <p className="text-gray-700 mb-1 font-medium text-base">Customer Signature:</p>
-                    <div className="border-b border-gray-400 h-10 w-64"></div>
-                </div>
-                <div>
-                    <p className="text-gray-700 mb-1 font-medium text-base">Date:</p>
-                    <div className="border-b border-gray-400 h-10 w-48"></div>
-                </div>
-            </div>
-
-            <div className="overflow-x-auto">
+            {/* Investor Table */}
+            <div className="overflow-x-auto mb-8">
                 <table className="min-w-full border border-gray-200 text-base">
+                    <caption className="text-left px-4 py-2 font-medium text-gray-700">
+                        List of Investor Declarations
+                    </caption>
                     <thead className="bg-gray-100 text-gray-700">
                         <tr>
                             <th className="px-4 py-3 text-left border">Investor ID</th>
@@ -40,7 +32,7 @@ const DeclarationDetails = ({ data }) => {
                         {data.map((declaration, index) => (
                             <tr
                                 key={index}
-                                className={`${index % 2 === 0 || index !== 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-green-50 transition duration-200`}
+                                className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-green-50 transition duration-200`}
                             >
                                 <td className="px-4 py-3 border">{declaration.investorID}</td>
                                 <td className="px-4 py-3 border">{declaration.cname}</td>
@@ -48,21 +40,48 @@ const DeclarationDetails = ({ data }) => {
                                 <td className="px-4 py-3 border">
                                     {[declaration.cadD1, declaration.cadD2, declaration.cadD3].filter(Boolean).join(', ')}
                                 </td>
-                                <td className="px-4 py-3 border">{declaration.ctel}</td>
-                                <td className="px-4 py-3 border">{declaration.cfax}</td>
+                                <td className="px-4 py-3 border">{declaration.ctel || <span className="text-gray-500 italic">N/A</span>}</td>
+                                <td className="px-4 py-3 border">{declaration.cfax || <span className="text-gray-500 italic">N/A</span>}</td>
                                 <td className="px-4 py-3 border">
-                                    <a
-                                        href={`mailto:${declaration.ceml}`}
-                                        className="text-blue-600 hover:underline"
-                                    >
-                                        {declaration.ceml}
-                                    </a>
+                                    {declaration.ceml ? (
+                                        <a
+                                            href={`mailto:${declaration.ceml}`}
+                                            className="text-blue-600 hover:underline"
+                                        >
+                                            {declaration.ceml}
+                                        </a>
+                                    ) : (
+                                        <span className="text-gray-500 italic">N/A</span>
+                                    )}
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {/* Signature Section - One Row per Investor */}
+            {data.map((declaration, index) => (
+                <div
+                    key={`signature-${index}`}
+                    className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-t pt-4"
+                >
+                    <div className="flex-1">
+                        <p className="text-gray-700 mb-1 font-medium text-base">Investor ID:</p>
+                        <div className="border-b border-gray-400 h-10 w-48 flex items-center pl-2">
+                            {declaration.investorID}
+                        </div>
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-gray-700 mb-1 font-medium text-base">Investor Signature:</p>
+                        <div className="border-b border-gray-400 h-10 w-64"></div>
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-gray-700 mb-1 font-medium text-base">Date:</p>
+                        <div className="border-b border-gray-400 h-10 w-48"></div>
+                    </div>
+                </div>
+            ))}
         </div>
     );
 };
