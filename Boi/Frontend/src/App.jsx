@@ -225,7 +225,7 @@ function App() {
 
       {/* Content to be displayed on the screen */}
       <div className="space-y-8 bg-white p-6 rounded shadow-lg">
-        <h1 className="text-3xl font-bold text-center mb-6">Investor Dashboard</h1>
+        <h1 className="text-3xl font-bold text-center mb-6"></h1>
 
         {/* Components with data */}
         <InvestorsList data={jsonData.investors} />
